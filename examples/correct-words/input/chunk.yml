@@ -1,0 +1,41 @@
+key: root
+values:
+- key: Personnages
+  values:
+  - key: Sexe
+    values:
+    - key: Adjectifs
+      values:
+      - key: words
+        values:
+        - féminin
+        - masculin
+    - key: Noms
+      values:
+      - key: words
+        values:
+        - bonhomme
+        - bonne femme
+        - dame
+        - demoiselle
+        - femme
+  - key: Age
+    values:
+    - key: Adjectifs
+      values:
+      - key: words
+        values:
+        - agé
+        - avancé
+        - croulant
+        - entre deux ages
+        - frais
+        - gateux
+        - jeune
+        - juvénile
+        - majeur
+        - mineur
+        - sénile
+        - usé
+        - vieux
+        - vioque

@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perchance-tools"
+version = "0.1.0"
+description = "Collection of scripts to work with perchance language"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE.txt" }
+keywords = ["jinja2","yaml"]
+authors = [
+  { name = "Daniel Martins Antunes", email = "danoan2008@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["jinja2","pyyaml"]
+
+[project.urls]
+Documentation = "https://github.com/danoan/perchance-tools#readme"
+Issues = "https://github.com/danoan/perchance-tools"
+Source = "https://github.com/danoan/perchance-tools"
+
+[project.scripts]
+perchance-tools = "danoan.perchance_tools.cli:main"
+
+# -------------------- build backend --------------------
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["danoan*"]
+namespaces = true
+
+
+# -------------------- code test --------------------
+# Using this key instead of tool.pytest is
+# temporary until transition to pyproject.toml
+# is completed: https://docs.pytest.org/en/6.2.x/customize.html
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov --strict-markers"
+xfail_strict = true
+testpaths = [
+    "test"
+]
+pythonpath = [
+"test" # Needed in order to import conftest.py in test modules
+]
+
+# -------------------- code coverage --------------------
+# In order to make coverage read from pyproject.toml
+# you should installed as: `pip install coverage[toml]`
+# https://coverage.readthedocs.io/en/latest/config.html
+[tool.coverage.run]
+# I've setup this to false because coverage was returning an error while
+# executing test_build.py. It is not ideal because it is nice to know which
+# conditional paths in the code I am not covering. The error was:
+# coverage.exceptions.DataError: Can't combine line data with arc data
+branch = false
+source = [
+    "danoan"
+]
+
+[tool.coverage.paths]
+source = [
+  "src/danoan",
+  "*/site-packages/danoan"
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+omit = []
+fail_under = 90
+
+
+# -------------------- type checking --------------------
+[tool.mypy]
+python_version = 3.8
+warn_unused_configs = true
+show_error_context = true
+pretty = true
+namespace_packages = true
+check_untyped_defs = true
+ignore_missing_imports = true # libraries without py.typed marker raises an error if this is set to false
+mypy_path = "test" # Such that conftest is imported correctly in test files without errors

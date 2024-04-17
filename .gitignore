@@ -1,0 +1,13 @@
+.venv
+.coverage
+output
+*__pycache__*
+*egg-info
+dist
+.tox
+docs/Makefile
+docs/_build
+docs/make.bat
+docs/reference
+src/danoan/**/*.c
+src/danoan/**/*.so
