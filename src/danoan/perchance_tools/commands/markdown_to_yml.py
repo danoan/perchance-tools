@@ -14,7 +14,7 @@ def markdown_to_yml(markdown_stream: TextIO, output_stream: TextIO):
     convert it to yaml.
     """
     D = api.create_dict_from_markdown(markdown_stream)
-    yaml.dump(D, sys.stdout, allow_unicode=True)
+    yaml.dump(D.extract(), sys.stdout, allow_unicode=True)
 
 
 def __markdown_to_yml__(list_markdown_filepath: List[str], *args, **kwargs):

@@ -4,11 +4,21 @@ from danoan.perchance_tools.core import model, utils
 from danoan.llm_assistant.core import api as llm_assistant
 
 from importlib import resources
-from jinja2 import Environment, PackageLoader
+from jinja2 import Template
 import json
+import logging
+import sys
 import re
 from typing import Any, Dict, List, TextIO
 
+LOG_LEVEL = logging.DEBUG
+
+logger = logging.getLogger(__file__)
+logger.setLevel(LOG_LEVEL)
+handler = logging.StreamHandler(sys.stderr)
+handler.setLevel(LOG_LEVEL)
+handler.setFormatter(logging.Formatter("%(levelname)s:%(name)s:%(message)s"))
+logger.addHandler(handler)
 
 # -------------------- Markdown to YML --------------------
 
@@ -121,10 +131,25 @@ def correct_words(
     return word_dict
 
 
-DATA_PACKAGE = "danoan.perchance_tools.assets.data"
-ENV_TEMPLATES = Environment(
-    loader=PackageLoader("danoan.perchance_tools", "assets/templates")
-)
+def _get_asset(asset_relative_path: Path):
+    ASSETS_PACKAGE = "danoan.perchance_tools.assets"
+
+    s = []
+    t = asset_relative_path
+    while t != t.parent:
+        s.append(t.name)
+        t = t.parent
+    s.reverse()
+
+    asset_dot_path = ".".join(s[:-1])
+    resource_dot_path = f"{ASSETS_PACKAGE}.{asset_dot_path}"
+    return resources.path(resource_dot_path, s[-1])
+
+
+def _read_asset_as_text(asset_relative_path: Path):
+    asset_path = _get_asset(asset_relative_path)
+    with open(asset_path, "r") as f:
+        return f.read()
 
 
 def _singleton(cls):
@@ -164,14 +189,20 @@ class _Cache:
 
 
 def _render_correct_words_user_prompt(categories: List[str], words: List[str]):
-    template = ENV_TEMPLATES.get_template("correct-words-user.txt.tpl")
+    template_data = _read_asset_as_text(
+        Path("prompts") / "correct_words" / "user.txt.tpl"
+    )
+    template = Template(template_data)
+
     return template.render(categories=categories, words=words)
 
 
 def _call_correct_word_prompt(user_prompt: str, language, model: str):
-    system_prompt = resources.read_text(DATA_PACKAGE, "correct-words-system.txt")
-    full_examples = resources.read_text(
-        DATA_PACKAGE, f"{language.alpha_3}-system-prompt-full-examples.txt"
+    system_prompt = _read_asset_as_text(
+        Path("prompts") / "correct_words" / "system.txt.tpl"
+    )
+    full_examples = _read_asset_as_text(
+        Path("prompts") / "correct_words" / language.alpha_3 / "full-examples.txt"
     )
 
     data = {
@@ -192,9 +223,17 @@ def _call_correct_word_prompt(user_prompt: str, language, model: str):
     return cache.load(prompt)
 
 
-def _find_corrections_with_single_prompt(
-    word_dict: model.WordDict, language, model: str
-):
+def _ensure_json_list_string(text_response: str):
+    response_lines = text_response.splitlines()
+    first_line = 0
+    for i, line in enumerate(response_lines):
+        if line and line[0] == "[":
+            first_line = i
+            break
+    return "".join(response_lines[first_line:])
+
+
+def _find_corrections(word_dict: model.WordDict, language, model: str):
     for key_path in utils.collect_key_path(word_dict, "words"):
         categories = key_path["path"]
         render_categories = [x for x in categories]
@@ -202,61 +241,33 @@ def _find_corrections_with_single_prompt(
         words = key_path["words"]
 
         user_prompt = _render_correct_words_user_prompt(render_categories, words)
-        try:
-            r = _call_correct_word_prompt(user_prompt, language, model)
-        except FileNotFoundError as ex:
-            # Language specific template as not found.
-            raise ex
+        r = _call_correct_word_prompt(user_prompt, language, model)
+        r = _ensure_json_list_string(r)
 
         try:
             correction = {}
             correction["categories"] = categories
             correction["corrections"] = json.loads(r)
 
-            yield correction
-        except:
-            # Error during prompt execution
-            pass
+            if correction["corrections"] and len(correction["corrections"]) > 0:
+                logger.debug(categories)
+                logger.debug(correction["corrections"])
 
+        except json.JSONDecodeError as ex:
+            logger.debug("Error decoding LLM response as json")
+            logger.debug(categories)
+            logger.debug(r)
+            # If an error is found while generating the JSON, I assume the list of
+            # corrections is empty
+            correction["corrections"] = []
 
-def _find_corrections_single_prompt_gpt3(
-    word_dict: model.WordDict, language
-) -> List[model.CorrectionInstructions]:
-    return [
-        model.CorrectionInstructions(**x)
-        for x in _find_corrections_with_single_prompt(
-            word_dict, language, "gpt-3.5-turbo"
-        )
-    ]
-
-
-def _find_corrections_single_prompt_gpt4(
-    word_dict: model.WordDict, language
-) -> List[model.CorrectionInstructions]:
-    return [
-        model.CorrectionInstructions(**x)
-        for x in _find_corrections_with_single_prompt(word_dict, language, "gpt-4")
-    ]
+        yield correction
 
 
 def find_corrections(
     word_dict: model.WordDict, language
 ) -> List[model.CorrectionInstructions]:
-    return _find_corrections_single_prompt_gpt4(word_dict, language)
-
-
-if __name__ == "__main__":
-    from langchain.globals import set_debug
-
-    set_debug(True)
-    import pycountry
-
-    markdown_filepath = "/home/daniel/Projects/Git/perchance-tools/examples/markdown-to-yml/input/chunk-simple.md"
-    with open(markdown_filepath, "r") as f:
-        word_dict = create_dict_from_markdown(f)
-
-    print(
-        _find_corrections_single_prompt_gpt3(
-            word_dict, pycountry.languages.get(name="french")
-        )
-    )
+    return [
+        model.CorrectionInstructions(**x)
+        for x in _find_corrections(word_dict, language, "gpt-4o")
+    ]
