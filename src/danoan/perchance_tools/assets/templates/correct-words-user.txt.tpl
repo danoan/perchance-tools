@@ -1,13 +1,15 @@
-List of categories
+# Words context
 
 {% for category in categories -%}
 {{category}}
 {% endfor -%}
 -----
 
-List of words
+# Words to evaluate
 
 {% for word in words -%}
 {{word}}
 {% endfor -%}
 -----
+
+# Output

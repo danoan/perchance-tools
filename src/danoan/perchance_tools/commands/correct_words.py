@@ -1,88 +1,48 @@
+from danoan.perchance_tools.core import api, model
+
+
 import argparse
-import copy
-from jinja2 import Environment, PackageLoader
 import logging
 from pathlib import Path
+import pycountry
 import sys
+from typing import List
 import yaml
 
-from typing import List, Optional
 
-SCRIPT_FOLDER = Path(__file__).parent
+import langchain
+
+langchain.debug = True
+
+LOG_LEVEL = logging.DEBUG
 
 logger = logging.getLogger(__file__)
-logger.setLevel(logging.INFO)
+logger.setLevel(LOG_LEVEL)
 handler = logging.StreamHandler(sys.stderr)
-handler.setLevel(logging.INFO)
+handler.setLevel(LOG_LEVEL)
 handler.setFormatter(logging.Formatter("%(levelname)s:%(name)s:%(message)s"))
 logger.addHandler(handler)
 
-env = Environment(loader=PackageLoader("danoan.perchance_tools", "assets/templates"))
 
-
-def render_prompt(categories: List[str], words: List[str]):
-    template = env.get_template("correct-words-user.txt.tpl")
-    return template.render(categories=categories, words=words)
-
-
-def __correct_words__(list_yml_filepath: List[str], language: str, *args, **kwargs):
-    """
-    Find mispellings in a list of words and correct them.
-
-    Each item in list_yml_filepath must be a path to a yml file with the following schema:
-
-    ```yml
-    key: "root"
-    values:
-    - key: "Category_A"
-      values:
-      - key: "Category_B1"
-        values:
-        - key: "words"
-          values:
-          - word_a
-          - word_b
-          - word_c
-      - key: "Category_B2"
-        values:
-        - key: "words"
-          values:
-          - word_d
-          - word_e
-    ```
-    """
-
-    def __traverse__(T, categories):
-        key = T["key"]
-        values = T["values"]
-
-        if key == "words":
-            yield {"categories": categories, "words": values}
-        else:
-            categories.append(key)
-
-            if type(values) is dict:
-                for x in __traverse__(values, categories):
-                    yield x
-            else:
-                for next in values:
-                    for x in __traverse__(next, categories):
-                        yield x
-
-            categories.pop()
-
-    def traverse(T):
-        for x in __traverse__(T, []):
-            yield x
+def __correct_words__(
+    list_yml_filepath: List[str], language_name: str, *args, **kwargs
+):
+    language = pycountry.languages.get(name=language_name)
+    if language is None:
+        logger.error(f"Language {language} not recognized")
+        exit(1)
 
     for yml_filepath in list_yml_filepath:
-        with open(yml_filepath, "r") as f:
-            T = yaml.load(f, Loader=yaml.Loader)
+        yml_filepath = Path(yml_filepath)
+        with open(yml_filepath, "r") as f_in:
+            Y = yaml.load(f_in, Loader=yaml.Loader)
+            word_dict = model.WordDict(Y)
+            list_corrections = api.find_corrections(word_dict, language)
+            corrected_dict = api.correct_words(word_dict, list_corrections)
 
-            for data_dict in traverse(T):
-                dict_copy = copy.deepcopy(data_dict)
-                dict_copy["categories"].remove("root")
-                print(render_prompt(**dict_copy))
+            corrected_filename = f"corrected-{yml_filepath.name}"
+            with open(corrected_filename, "w") as f_out:
+                yaml.dump(corrected_dict.extract(), f_out, allow_unicode=True)
 
 
 def extend_parser(subparser_action=None):
@@ -104,7 +64,9 @@ def extend_parser(subparser_action=None):
             formatter_class=argparse.RawDescriptionHelpFormatter,
         )
 
-    parser.add_argument("language", help="Language of the list of words.")
+    parser.add_argument(
+        "language_name", metavar="language", help="Language of the list of words."
+    )
     parser.add_argument(
         "list_yml_filepath",
         metavar="yml_filepath",
