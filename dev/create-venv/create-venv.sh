@@ -17,6 +17,8 @@ trap "echo 'Aborted!'" err
 ./dev/clean/clean.sh
 python -m venv .venv
 
+echo "export LLM_ASSISTANT_CONFIGURATION_FOLDER=/home/daniel/.config/llm-assistant" >>".venv/bin/activate"
+
 source .venv/bin/activate
 
 pip install --upgrade pip

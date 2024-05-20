@@ -63,15 +63,13 @@ donzelle
 doyen
 enfancon
 enfant
-femme
+jeune femme
 fillette
 gamin
 garconnet
 gnard
 gosse
-homme
-jeune
-jeune
+jeune homme
 jeune
 jeunet
 jeunette

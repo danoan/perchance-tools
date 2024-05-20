@@ -1,30 +1,33 @@
-key: root
-values:
-- key: Personnages
-  values:
-  - key: Sexe
-    values:
-    - key: Adjectifs
-      values:
-      - key: words
-        values:
+root:
+- Personnages:
+  - Sexe:
+    - Adjectifs:
+      - words:
         - féminin
         - masculin
-    - key: Noms
-      values:
-      - key: words
-        values:
+    - Noms:
+      - words:
         - bonhomme
         - bonne femme
         - dame
         - demoiselle
         - femme
-  - key: Age
-    values:
-    - key: Adjectifs
-      values:
-      - key: words
-        values:
+        - fille
+        - garcon
+        - gars
+        - gazelle
+        - homme
+        - individu
+        - madame
+        - mademoiselle
+        - male
+        - mec
+        - miss
+        - monsieur
+        - type
+  - Age:
+    - Adjectifs:
+      - words:
         - agé
         - avancé
         - croulant
@@ -39,3 +42,96 @@ values:
         - usé
         - vieux
         - vioque
+    - Noms:
+      - words:
+        - aicul
+        - ainé
+        - ancien
+        - ancétre
+        - bambin
+        - benjamin
+        - bébé
+        - centenaire
+        - chérubin
+        - croulant
+        - donzelle
+        - doyen
+        - enfancon
+        - enfant
+        - fillette
+        - gamin
+        - garconnet
+        - gnard
+        - gosse
+        - jeune
+        - jeune femme
+        - jeune homme
+        - jeunet
+        - jeunette
+        - jeunot
+        - jouvenceau
+        - lardon
+        - marmaille
+        - marmot
+        - mioche
+        - mome
+        - moutard
+        - nourrisson
+        - nouveau-né
+        - patriarche
+        - petiot
+        - poupard
+        - poupon
+        - rejeton
+        - tout-petit
+        - tétard
+        - vieux
+        - vétéran
+  - Cheveux:
+    - Synonymes:
+      - words:
+        - chevelure
+        - crinière
+        - tignasse
+    - Couleur:
+      - words:
+        - auburn
+        - blancs
+        - blond  vénitien
+        - blonds
+        - bruns
+        - châtains
+        - grisonnants
+        - noirs
+        - poivre et sel
+        - roux
+    - Adjectifs:
+      - words:
+        - abondants
+        - bien coiffés
+        - bien peignés
+        - bouclés
+        - brillants
+        - cassants
+        - chauve
+        - clairsemés
+        - crépus
+        - crépés
+        - drus
+        - dégarni
+        - emmêlés
+        - fourchus
+        - fournis
+        - frisottés
+        - frisés
+        - hirsutes
+        - hérissés
+        - mal coiffés
+        - mal peignés
+        - ondulés
+        - pelliculeux
+        - plats
+        - rares
+        - rasés
+        - ternes
+        - épai

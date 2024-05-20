@@ -1,0 +1,53 @@
+{{
+# Words context
+
+Personnage
+Sexe
+Adjectifs
+-----
+
+# Words to evaluate
+
+féminin
+masculin
+-----
+
+# Output
+
+[]
+}}
+
+{{
+# Words context
+
+Personnage
+Sexe
+Noms
+-----
+
+# Words to evaluate
+
+bonhomme
+bonne femme
+dame
+demoiselle
+femme
+fille
+garcon
+gars
+gazelle
+homme
+individu
+madame
+mademoiselle
+male
+mec
+miss
+monsieur
+type
+-----
+
+# Output
+
+[ ["garcon", "garçon"], ["male", "mâle"] ]
+}}
