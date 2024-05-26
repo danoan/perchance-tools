@@ -1,6 +1,7 @@
 from danoan.perchance_tools.commands import (
     convert_to_perchance_format,
     correct_words,
+    list_categories,
     markdown_to_yml,
 )
 
@@ -30,7 +31,12 @@ def main():
     )
     subparser_action = parser.add_subparsers()
 
-    list_of_commands = [markdown_to_yml, correct_words, convert_to_perchance_format]
+    list_of_commands = [
+        markdown_to_yml,
+        correct_words,
+        convert_to_perchance_format,
+        list_categories,
+    ]
     for command in list_of_commands:
         command.extend_parser(subparser_action)
 
