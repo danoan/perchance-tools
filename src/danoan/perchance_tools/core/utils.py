@@ -11,7 +11,7 @@ def collect_key_path(source: model.WordDict, target_key: str):
     ...     'root':
     ...     {
     ...         'Category_A':
-    ...         {
+    ...         [
     ...             'Category_B1':
     ...             {
     ...                 'words':
@@ -29,7 +29,7 @@ def collect_key_path(source: model.WordDict, target_key: str):
     ...                     'word_e'
     ...                 ]
     ...             }
-    ...         }
+    ...         ]
     ...     }
     ... }
     >>> w = model.WordDict(d)

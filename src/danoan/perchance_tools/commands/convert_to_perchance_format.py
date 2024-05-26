@@ -1,47 +1,60 @@
+from danoan.perchance_tools.core import api, model, utils
+
 import argparse
-import json
-import yaml
+import logging
+import pycountry
 import sys
+import yaml
 
-from typing import List, TextIO
+from typing import Any, Dict, List, TextIO
 
+LOG_LEVEL = logging.INFO
 
-def translate_text(text: str, from_language: str, to_language: str):
-    pass
+logger = logging.getLogger(__file__)
+logger.setLevel(LOG_LEVEL)
+handler = logging.StreamHandler(sys.stderr)
+handler.setLevel(LOG_LEVEL)
+handler.setFormatter(logging.Formatter("%(levelname)s:%(name)s:%(message)s"))
+logger.addHandler(handler)
 
 
 def format_key_name(s):
-    return s.lower().replace(" ", "_")
+    return s.lower().replace(",", " ").replace("  ", " ").replace(" ", "_")
 
 
-def dump_perchance_format(obj, stream_out: TextIO):
-    def _dump(obj, indentation_level: int):
-        original_key = obj["key"]
-
-        if original_key != "words":
-            translation_response = json.loads(
-                translate_text(original_key.lower(), "fra", "eng")
-            )
-            if len(translation_response) == 0:
-                print("ERROR: No translation for word:", original_key)
+def _key_path_to_perchance_dict(list_key_paths: List[Dict[str, Any]]):
+    d = {"root": []}
+    for key_path in list_key_paths:
+        d["root"].append({})
+        current = d["root"][-1]
+        for key in key_path["path"]:
+            perchance_key = format_key_name(key)
+            if perchance_key not in current:
+                current[perchance_key] = [{}]
             else:
-                translated_key = translation_response[0]
+                current[perchance_key].append({})
 
-            stream_out.write(" " * indentation_level * 4)
-            stream_out.write(f"{format_key_name(translated_key)}\n")
-            indentation_level += 1
+            current = current[perchance_key][-1]
+        current["words"] = key_path["words"]
+    return d
 
-            stream_out.write(" " * indentation_level * 4)
-            stream_out.write(f"name={original_key}\n")
 
-        for value in obj["values"]:
-            if type(value) is dict:
-                _dump(value, indentation_level + 1)
-            else:
-                stream_out.write(" " * indentation_level * 4)
-                stream_out.write(f"{value}\n")
+def _translate_key_paths(word_dict: model.WordDict):
+    for key_path in utils.collect_key_path(word_dict, "words"):
+        kp = {"path": [], "words": key_path["words"]}
+        categories = key_path["path"]
+        for category in categories:
+            if category == "root":
+                continue
+            from_language = pycountry.languages.get(name="French")
+            to_language = pycountry.languages.get(name="English")
+            response = api.translate(category, from_language.name, to_language.name)
+            if not response:
+                logger.info(f"Error processing: {categories}. Skipping.")
+                continue
 
-    _dump(obj, 0)
+            kp["path"].append(response[0])
+        yield kp
 
 
 def __convert_to_perchance_format__(list_yml_filepath: List[str], *args, **kwargs):
@@ -51,7 +64,10 @@ def __convert_to_perchance_format__(list_yml_filepath: List[str], *args, **kwarg
     for filepath in list_yml_filepath:
         with open(filepath, "r") as f:
             T = yaml.load(f, Loader=yaml.Loader)
-            dump_perchance_format(T, sys.stdout)
+            word_dict = model.WordDict(T)
+
+            d = _key_path_to_perchance_dict(list(_translate_key_paths(word_dict)))
+            yaml.dump(d, sys.stdout, allow_unicode=True)
 
 
 def extend_parser(subparser_action=None):

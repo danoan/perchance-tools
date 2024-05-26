@@ -271,3 +271,44 @@ def find_corrections(
         model.CorrectionInstructions(**x)
         for x in _find_corrections(word_dict, language, "gpt-4o")
     ]
+
+
+# -------------------- Perchance format --------------------
+
+
+def translate(word: str, from_language: str, to_language: str):
+    system_prompt_template = _read_asset_as_text(
+        Path("prompts") / "translate" / "system.txt.tpl"
+    )
+    user_prompt_template = _read_asset_as_text(
+        Path("prompts") / "translate" / "user.txt.tpl"
+    )
+    data = {
+        "word": word,
+        "from_language_name": from_language,
+        "to_language_name": to_language,
+    }
+
+    system_prompt = Template(system_prompt_template).render(**data)
+    user_prompt = Template(user_prompt_template).render(**data)
+
+    prompt = llm_assistant.model.PromptConfiguration(
+        "translate-word", system_prompt, user_prompt
+    )
+
+    cache = _Cache()
+    result = cache.load(prompt)
+    if not result:
+        result = llm_assistant.custom(prompt, model="gpt-3.5-turbo")
+        cache.save(prompt, result.content)
+
+    response = cache.load(prompt)
+    if not response:
+        return None
+    else:
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError:
+            logger.debug("Error decoding LLM response as json")
+            logger.debug(word)
+            return [word]
