@@ -73,12 +73,12 @@ def create_dict_from_markdown(markdown_stream: TextIO) -> model.WordDict:
     """
     Create a dictionary from markdown text.
 
-    Header titles are mapped to keys which its value
-    is a list of dictionaries created from its sub-headers.
+    Header titles are mapped to keys which values
+    are dictionaries themselves created from theirs sub-headers.
 
-    Each line of a non-header text is included as an item in a
-    list which itself is contained in a dictionary with a unique
-    key named "words".
+    The text level is stored in the key `words` within its
+    closest header-level dictionary. The `words` key stores the
+    lines of the text.
     """
     cues = [[0, "root", [], False]]
     cues.extend(list(_parse_markdown(markdown_stream.read())))
@@ -89,9 +89,9 @@ def create_dict_from_markdown(markdown_stream: TextIO) -> model.WordDict:
             return None
 
         cues[start_index][3] = True
-        root = {title.strip(): []}
+        root = {title.strip(): {}}
         if len(words) > 0:
-            root[title.strip()] = [{"words": words}]
+            root[title.strip()] = {"words": words}
             return root
 
         for index in range(start_index + 1, len(cues)):
@@ -99,7 +99,7 @@ def create_dict_from_markdown(markdown_stream: TextIO) -> model.WordDict:
             if c_level > level:
                 t = _create_tree(index)
                 if t:
-                    root[title.strip()].append(t)
+                    root[title.strip()].update(t)
             elif c_level <= level:
                 return root
 

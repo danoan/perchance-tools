@@ -40,22 +40,15 @@ def collect_key_path(source: model.WordDict, target_key: str):
 
     def __traverse__(T, path):
         assert type(T) is dict
-        key, values = list(T.items())[0]
 
-        if key == target_key:
-            yield {"path": path, target_key: values}
-        else:
-            path.append(key)
-
-            if type(values) is dict:
-                for x in __traverse__(values, path):
-                    yield x
+        for key in T.keys():
+            if key == target_key:
+                yield {"path": path, target_key: T[key]}
             else:
-                for next in values:
-                    for x in __traverse__(next, path):
-                        yield x
-
-            path.pop()
+                path.append(key)
+                for x in __traverse__(T[key], path):
+                    yield x
+                path.pop()
 
     for data_dict in __traverse__(source.extract(), []):
         dict_copy = copy.deepcopy(data_dict)

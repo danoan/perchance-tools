@@ -1,33 +1,8 @@
 root:
-- Personnages:
-  - Sexe:
-    - Adjectifs:
-      - words:
-        - féminin
-        - masculin
-    - Noms:
-      - words:
-        - bonhomme
-        - bonne femme
-        - dame
-        - demoiselle
-        - femme
-        - fille
-        - garcon
-        - gars
-        - gazelle
-        - homme
-        - individu
-        - madame
-        - mademoiselle
-        - male
-        - mec
-        - miss
-        - monsieur
-        - type
-  - Age:
-    - Adjectifs:
-      - words:
+  Personnages:
+    Age:
+      Adjectifs:
+        words:
         - agé
         - avancé
         - croulant
@@ -42,8 +17,8 @@ root:
         - usé
         - vieux
         - vioque
-    - Noms:
-      - words:
+      Noms:
+        words:
         - aicul
         - ainé
         - ancien
@@ -87,26 +62,9 @@ root:
         - tétard
         - vieux
         - vétéran
-  - Cheveux:
-    - Synonymes:
-      - words:
-        - chevelure
-        - crinière
-        - tignasse
-    - Couleur:
-      - words:
-        - auburn
-        - blancs
-        - blond  vénitien
-        - blonds
-        - bruns
-        - châtains
-        - grisonnants
-        - noirs
-        - poivre et sel
-        - roux
-    - Adjectifs:
-      - words:
+    Cheveux:
+      Adjectifs:
+        words:
         - abondants
         - bien coiffés
         - bien peignés
@@ -135,3 +93,45 @@ root:
         - rasés
         - ternes
         - épai
+      Couleur:
+        words:
+        - auburn
+        - blancs
+        - blond  vénitien
+        - blonds
+        - bruns
+        - châtains
+        - grisonnants
+        - noirs
+        - poivre et sel
+        - roux
+      Synonymes:
+        words:
+        - chevelure
+        - crinière
+        - tignasse
+    Sexe:
+      Adjectifs:
+        words:
+        - féminin
+        - masculin
+      Noms:
+        words:
+        - bonhomme
+        - bonne femme
+        - dame
+        - demoiselle
+        - femme
+        - fille
+        - garcon
+        - gars
+        - gazelle
+        - homme
+        - individu
+        - madame
+        - mademoiselle
+        - male
+        - mec
+        - miss
+        - monsieur
+        - type
