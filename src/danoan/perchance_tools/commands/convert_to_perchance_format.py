@@ -1,6 +1,7 @@
 from danoan.perchance_tools.core import api, model, utils
 
 import argparse
+import io
 import logging
 import pycountry
 import sys
@@ -22,20 +23,45 @@ def format_key_name(s):
     return s.lower().replace(",", " ").replace("  ", " ").replace(" ", "_")
 
 
+def print_perchance_dict(pd):
+    ss = io.StringIO()
+    identation_spaces = 2
+
+    def _print(pd, level=0):
+        sp = identation_spaces * level
+
+        if type(pd) is list:
+            for value in pd:
+                ss.write(f"{sp*' '}{value}\n")
+        else:
+            if "name" in pd.keys():
+                ss.write(f"{sp*' '}name={pd['name']}\n")
+            for key, value in pd.items():
+                if key == "name":
+                    continue
+                ss.write(f"{sp*' '}{key}\n")
+                _print(pd[key], level + 1)
+
+    _print(pd["root"])
+    return ss.getvalue()
+
+
 def _key_path_to_perchance_dict(list_key_paths: List[Dict[str, Any]]):
-    d = {"root": []}
+
+    d = {"root": {}}
     for key_path in list_key_paths:
-        d["root"].append({})
-        current = d["root"][-1]
-        for key in key_path["path"]:
+        current = d["root"]
+        path = key_path["path"]
+        words = key_path["words"]
+
+        for key in path:
             perchance_key = format_key_name(key)
             if perchance_key not in current:
-                current[perchance_key] = [{}]
-            else:
-                current[perchance_key].append({})
+                current[perchance_key] = {"name": key.lower()}
+            current = current[perchance_key]
 
-            current = current[perchance_key][-1]
-        current["words"] = key_path["words"]
+        current["words"] = words
+
     return d
 
 
@@ -67,11 +93,11 @@ def __convert_to_perchance_format__(list_yml_filepath: List[str], *args, **kwarg
             word_dict = model.WordDict(T)
 
             d = _key_path_to_perchance_dict(list(_translate_key_paths(word_dict)))
-            yaml.dump(d, sys.stdout, allow_unicode=True)
+            print(print_perchance_dict(d))
 
 
 def extend_parser(subparser_action=None):
-    command_name = "convert-to-perchance"
+    command_name = "convert-to-perchance-format"
     description = __convert_to_perchance_format__.__doc__
     help = description.split(".")[0] if description else ""
 

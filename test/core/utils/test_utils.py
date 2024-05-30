@@ -14,3 +14,6 @@ def test_collect_key_path():
     L = list(utils.collect_key_path(w, "words"))
     assert L[0]["path"] == ["root", "Category_A", "Category_B1"]
     assert L[0]["words"] == ["word_a", "word_b", "word_c"]
+
+    assert L[1]["path"] == ["root", "Category_A", "Category_B2"]
+    assert L[1]["words"] == ["word_d", "word_e"]
