@@ -1,0 +1,41 @@
+name: Build documentation
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build-docs:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+          python-version: "3.10"
+          cache: "pip"
+    - name: Install tox
+      run: |
+        python -m pip install --upgrade pip && pip install tox
+    - name: Build documentation
+      run: |
+        tox -e docs
+    - name: Publish documentation
+      run: |
+        git clone https://github.com/danoan/perchance-tools.git --branch gh-pages --single-branch gh-pages
+        cp -r docs/_build/* gh-pages/
+        cd gh-pages
+        touch .nojekyll
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update documentation" -a || true
+        # The above command will fail if no changes were present, so we ignore
+        # that.
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: gh-pages
+        directory: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}

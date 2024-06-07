@@ -1,0 +1,56 @@
+name: Single Environment Test suite
+
+on:
+  workflow_call:
+    inputs:
+      python_version:
+        required: true
+        type: string
+      toxenv:
+        required: true
+        type: string
+
+
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+          python-version: ${{ inputs.python_version }}
+          cache: "pip"
+    - name: Install tox
+      run: |
+        python -m pip install --upgrade pip && pip install tox
+    - name: Linting check
+      run: |
+        tox -e lint
+  check-type:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+          python-version: ${{ inputs.python_version }}
+          cache: "pip"
+    - name: Install tox
+      run: |
+        python -m pip install --upgrade pip && pip install tox
+    - name: Type check
+      run: |
+        tox -e typecheck
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+          python-version: ${{ inputs.python_version }}
+          cache: "pip"
+    - name: Install tox
+      run: |
+        python -m pip install --upgrade pip && pip install tox
+    - name: Run tests
+      run: |
+        tox -e ${{ inputs.toxenv }} -- --openai-key "${{ secrets.OPENAI_KEY }}"
