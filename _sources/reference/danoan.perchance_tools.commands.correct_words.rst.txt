@@ -1,0 +1,7 @@
+danoan.perchance\_tools.commands.correct\_words module
+======================================================
+
+.. automodule:: danoan.perchance_tools.commands.correct_words
+   :members:
+   :undoc-members:
+   :show-inheritance:

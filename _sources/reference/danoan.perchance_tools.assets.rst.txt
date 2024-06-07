@@ -1,0 +1,15 @@
+danoan.perchance\_tools.assets package
+======================================
+
+.. automodule:: danoan.perchance_tools.assets
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.perchance_tools.assets.prompts

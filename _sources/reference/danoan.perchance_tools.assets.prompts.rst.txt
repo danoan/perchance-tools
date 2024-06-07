@@ -1,0 +1,7 @@
+danoan.perchance\_tools.assets.prompts package
+==============================================
+
+.. automodule:: danoan.perchance_tools.assets.prompts
+   :members:
+   :undoc-members:
+   :show-inheritance:

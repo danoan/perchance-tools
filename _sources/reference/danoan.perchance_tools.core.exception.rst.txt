@@ -1,0 +1,7 @@
+danoan.perchance\_tools.core.exception module
+=============================================
+
+.. automodule:: danoan.perchance_tools.core.exception
+   :members:
+   :undoc-members:
+   :show-inheritance:

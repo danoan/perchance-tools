@@ -1,0 +1,7 @@
+danoan.perchance\_tools.commands.list\_categories module
+========================================================
+
+.. automodule:: danoan.perchance_tools.commands.list_categories
+   :members:
+   :undoc-members:
+   :show-inheritance:

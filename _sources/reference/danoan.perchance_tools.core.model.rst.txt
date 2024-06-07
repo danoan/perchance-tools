@@ -1,0 +1,7 @@
+danoan.perchance\_tools.core.model module
+=========================================
+
+.. automodule:: danoan.perchance_tools.core.model
+   :members:
+   :undoc-members:
+   :show-inheritance:

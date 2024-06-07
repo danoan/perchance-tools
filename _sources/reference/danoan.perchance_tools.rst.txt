@@ -1,0 +1,22 @@
+danoan.perchance\_tools namespace
+=================================
+
+.. py:module:: danoan.perchance_tools
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.perchance_tools.assets
+   danoan.perchance_tools.commands
+   danoan.perchance_tools.core
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.perchance_tools.cli

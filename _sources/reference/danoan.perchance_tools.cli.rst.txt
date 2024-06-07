@@ -1,0 +1,7 @@
+danoan.perchance\_tools.cli module
+==================================
+
+.. automodule:: danoan.perchance_tools.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

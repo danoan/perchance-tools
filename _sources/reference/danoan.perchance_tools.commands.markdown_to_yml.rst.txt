@@ -1,0 +1,7 @@
+danoan.perchance\_tools.commands.markdown\_to\_yml module
+=========================================================
+
+.. automodule:: danoan.perchance_tools.commands.markdown_to_yml
+   :members:
+   :undoc-members:
+   :show-inheritance:

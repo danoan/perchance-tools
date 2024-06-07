@@ -1,0 +1,18 @@
+danoan.perchance\_tools.core package
+====================================
+
+.. automodule:: danoan.perchance_tools.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.perchance_tools.core.api
+   danoan.perchance_tools.core.exception
+   danoan.perchance_tools.core.model
+   danoan.perchance_tools.core.utils

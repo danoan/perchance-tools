@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>danoan.perchance_tools.core.api module &mdash; perchance-tools 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=a3d76245" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            perchance-tools
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started with perchance-tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api-reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">perchance-tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">danoan.perchance_tools.core.api module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/danoan.perchance_tools.core.api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-danoan.perchance_tools.core.api">
+<span id="danoan-perchance-tools-core-api-module"></span><h1>danoan.perchance_tools.core.api module<a class="headerlink" href="#module-danoan.perchance_tools.core.api" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="danoan.perchance_tools.core.api.create_dict_from_markdown">
+<span class="sig-prename descclassname"><span class="pre">danoan.perchance_tools.core.api.</span></span><span class="sig-name descname"><span class="pre">create_dict_from_markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markdown_stream</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TextIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.WordDict" title="danoan.perchance_tools.core.model.WordDict"><span class="pre">WordDict</span></a></span></span><a class="reference internal" href="../_modules/danoan/perchance_tools/core/api.html#create_dict_from_markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.perchance_tools.core.api.create_dict_from_markdown" title="Link to this definition"></a></dt>
+<dd><p>Create a dictionary from markdown text.</p>
+<p>Header titles are mapped to keys which values
+are dictionaries themselves created from theirs sub-headers.</p>
+<p>The text level is stored in the key <cite>words</cite> within its
+closest header-level dictionary. The <cite>words</cite> key stores the
+lines of the text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>markdown_stream</strong> (<em>TextIO</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.WordDict" title="danoan.perchance_tools.core.model.WordDict"><em>WordDict</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danoan.perchance_tools.core.api.find_corrections">
+<span class="sig-prename descclassname"><span class="pre">danoan.perchance_tools.core.api.</span></span><span class="sig-name descname"><span class="pre">find_corrections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.WordDict" title="danoan.perchance_tools.core.model.WordDict"><span class="pre">WordDict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.ReplaceInstructions" title="danoan.perchance_tools.core.model.ReplaceInstructions"><span class="pre">ReplaceInstructions</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/danoan/perchance_tools/core/api.html#find_corrections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.perchance_tools.core.api.find_corrections" title="Link to this definition"></a></dt>
+<dd><p>Find typos and mispelled words in the dictionary.</p>
+<p>Runs a prompt over a LLM to find mispelled words in the WordDict and return
+a list of ReplaceInstructions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>word_dict</strong> (<a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.WordDict" title="danoan.perchance_tools.core.model.WordDict"><em>WordDict</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[<a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.ReplaceInstructions" title="danoan.perchance_tools.core.model.ReplaceInstructions"><em>ReplaceInstructions</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danoan.perchance_tools.core.api.replace_words">
+<span class="sig-prename descclassname"><span class="pre">danoan.perchance_tools.core.api.</span></span><span class="sig-name descname"><span class="pre">replace_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.WordDict" title="danoan.perchance_tools.core.model.WordDict"><span class="pre">WordDict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">correction_instructions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.ReplaceInstructions" title="danoan.perchance_tools.core.model.ReplaceInstructions"><span class="pre">ReplaceInstructions</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/danoan/perchance_tools/core/api.html#replace_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.perchance_tools.core.api.replace_words" title="Link to this definition"></a></dt>
+<dd><p>Executes a series of replace operations in a WordDict.</p>
+<p>The ReplaceInstruction has a key and a list of replace
+pairs with old and new word.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word_dict</strong> (<a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.WordDict" title="danoan.perchance_tools.core.model.WordDict"><em>WordDict</em></a>)</p></li>
+<li><p><strong>correction_instructions</strong> (<em>List</em><em>[</em><a class="reference internal" href="danoan.perchance_tools.core.model.html#danoan.perchance_tools.core.model.ReplaceInstructions" title="danoan.perchance_tools.core.model.ReplaceInstructions"><em>ReplaceInstructions</em></a><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="danoan.perchance_tools.core.api.translate">
+<span class="sig-prename descclassname"><span class="pre">danoan.perchance_tools.core.api.</span></span><span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/danoan/perchance_tools/core/api.html#translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#danoan.perchance_tools.core.api.translate" title="Link to this definition"></a></dt>
+<dd><p>Translate a word from one language to another.</p>
+<p>Runs a prompt over a LLM to get the translation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word</strong> (<em>str</em>)</p></li>
+<li><p><strong>from_language</strong> (<em>str</em>)</p></li>
+<li><p><strong>to_language</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Daniel Martins Antunes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

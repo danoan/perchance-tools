@@ -1,0 +1,12 @@
+danoan namespace
+================
+
+.. py:module:: danoan
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   danoan.perchance_tools
