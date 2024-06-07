@@ -9,13 +9,12 @@ root:
         words:
           - bonhomme
           - bonne femme
-          - dame 
+          - dame
     Age:
       Adjectifs:
         words:
           - agé
           - avancé
           - croulant
-          - entre deux ages 
+          - entre deux ages
           - frais
-

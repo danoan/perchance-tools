@@ -1,4 +1,4 @@
-from danoan.perchance_tools.core import api, model, utils
+from danoan.perchance_tools.core import api, exception, model, utils
 
 import argparse
 import io
@@ -7,7 +7,7 @@ import pycountry
 import sys
 import yaml
 
-from typing import Any, Dict, List, TextIO
+from typing import Any, Dict, List
 
 LOG_LEVEL = logging.INFO
 
@@ -47,8 +47,7 @@ def print_perchance_dict(pd):
 
 
 def _key_path_to_perchance_dict(list_key_paths: List[Dict[str, Any]]):
-
-    d = {"root": {}}
+    d: Dict[str, Any] = {"root": {}}
     for key_path in list_key_paths:
         current = d["root"]
         path = key_path["path"]
@@ -74,7 +73,14 @@ def _translate_key_paths(word_dict: model.WordDict):
                 continue
             from_language = pycountry.languages.get(name="French")
             to_language = pycountry.languages.get(name="English")
-            response = api.translate(category, from_language.name, to_language.name)
+            try:
+                response = api.translate(category, from_language.name, to_language.name)
+            except exception.CacheNotConfiguredError:
+                print(
+                    "The cache for LLM calls is not configured. Please setup",
+                    " the llm-assistant with llm-assistant setup before proceeding",
+                )
+                exit(1)
             if not response:
                 logger.info(f"Error processing: {categories}. Skipping.")
                 continue

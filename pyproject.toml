@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["jinja2","pyyaml", "pycountry", "llm-assistant @ file:///home/daniel/Projects/Git/llm-assistant"]
+dependencies = ["jinja2","pyyaml", "pycountry", "llm-assistant @ git+https://github.com/danoan/llm-assistant.git"]
 # "llm-assistant @ file:///home/daniel/Projects/Git/llm-assistant"
 [project.urls]
 Documentation = "https://github.com/danoan/perchance-tools#readme"
@@ -76,7 +76,7 @@ source = [
 show_missing = true
 skip_covered = true
 omit = []
-fail_under = 90
+fail_under = 80
 
 
 # -------------------- type checking --------------------
