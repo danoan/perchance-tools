@@ -24,14 +24,14 @@ logger.addHandler(handler)
 
 
 @dataclass
-class MarkdownMarker:
+class _MarkdownMarker:
     level: int
     title: str
     character_span: Tuple[int, int]
 
 
 @dataclass
-class MarkdownCue:
+class _MarkdownCue:
     level: int
     title: str
     lines: List[str]
@@ -39,7 +39,7 @@ class MarkdownCue:
 
 def _collect_markdown_markers(
     markdown_text: str,
-) -> Generator[MarkdownMarker, None, None]:
+) -> Generator[_MarkdownMarker, None, None]:
     """
     Return the start and end characters of header titles in a markdown.
 
@@ -60,15 +60,15 @@ def _collect_markdown_markers(
     for m in header_start.finditer(markdown_text):
         header_marker, header_title = m.groups()
         header_level = len(header_marker)
-        yield MarkdownMarker(header_level, header_title, m.span())
+        yield _MarkdownMarker(header_level, header_title, m.span())
 
 
-def _parse_markdown(markdown_text: str) -> Generator[MarkdownCue, None, None]:
+def _parse_markdown(markdown_text: str) -> Generator[_MarkdownCue, None, None]:
     """
     Parse markdown text into (level, title, list of words) components.
     """
     m = list(_collect_markdown_markers(markdown_text))
-    m.append(MarkdownMarker(0, "root", (len(markdown_text), len(markdown_text))))
+    m.append(_MarkdownMarker(0, "root", (len(markdown_text), len(markdown_text))))
 
     for e, n in zip(m[:-1], m[1:]):
         level, title, span = e.level, e.title, e.character_span
@@ -84,7 +84,7 @@ def _parse_markdown(markdown_text: str) -> Generator[MarkdownCue, None, None]:
                 continue
             words.add(_w)
 
-        yield MarkdownCue(level, title, list(sorted(words)))
+        yield _MarkdownCue(level, title, list(sorted(words)))
 
 
 def create_dict_from_markdown(markdown_stream: TextIO) -> model.WordDict:
@@ -98,7 +98,7 @@ def create_dict_from_markdown(markdown_stream: TextIO) -> model.WordDict:
     closest header-level dictionary. The `words` key stores the
     lines of the text.
     """
-    cues = [MarkdownCue(0, "root", [])]
+    cues = [_MarkdownCue(0, "root", [])]
     cues.extend(list(_parse_markdown(markdown_stream.read())))
     visited = [False] * len(cues)
 
@@ -242,7 +242,7 @@ def replace_words(
     """
     Executes a series of replace operations in a WordDict.
 
-    The CorrectionInstruction has a key and a list of replace
+    The ReplaceInstruction has a key and a list of replace
     pairs with old and new word.
     """
     for instruction in correction_instructions:
@@ -264,6 +264,12 @@ def replace_words(
 def find_corrections(
     word_dict: model.WordDict, language
 ) -> List[model.ReplaceInstructions]:
+    """
+    Find typos and mispelled words in the dictionary.
+
+    Runs a prompt over a LLM to find mispelled words in the WordDict and return
+    a list of ReplaceInstructions.
+    """
     return [
         model.ReplaceInstructions(**x)
         for x in _find_corrections(word_dict, language, "gpt-4o")
@@ -274,6 +280,11 @@ def find_corrections(
 
 
 def translate(word: str, from_language: str, to_language: str) -> List[str]:
+    """
+    Translate a word from one language to another.
+
+    Runs a prompt over a LLM to get the translation.
+    """
     system_prompt_template = _read_asset_as_text(
         Path("prompts") / "translate" / "system.txt.tpl"
     )
