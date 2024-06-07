@@ -1,0 +1,33 @@
+name: Pull request procedure
+
+on:
+  pull_request:
+    branches:
+      - master
+      - dev/v[0-9]+.[0-9]+.[0-9]+
+
+permissions:
+  # actions: read|write|none
+  # checks: read|write|none
+  contents: read
+  # deployments: read|write|none
+  # id-token: read|write|none
+  # issues: read|write|none
+  # discussions: read|write|none
+  # packages: read|write|none
+  # pages: read|write|none
+  # pull-requests: read|write|none
+  # repository-projects: read|write|none
+  # security-events: read|write|none
+  # statuses: read|write|none
+
+
+jobs:
+  test-suite:
+    uses: ./.github/workflows/multiple-test-suite.yml
+    secrets: inherit
+  build-documentation:
+    permissions:
+      contents: write
+    needs: [test-suite]
+    uses: ./.github/workflows/build-documentation.yml
