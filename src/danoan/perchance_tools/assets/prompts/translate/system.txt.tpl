@@ -5,7 +5,7 @@ Your answer must be a json list which the items are strings written in {{to_lang
 You should do your best to find at least one and at most five possible translations.
 
 Below there are a list of examples. The list below does not necessarily contain examples for the pair
-{{from_language_name}} and {{to_language_name}}. They are merely ilustrative. 
+{{from_language_name}} and {{to_language_name}}. They are merely ilustrative.
 
 You must follow the exact same model of the examples below.
 

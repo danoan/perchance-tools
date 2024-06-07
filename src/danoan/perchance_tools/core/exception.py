@@ -1,0 +1,2 @@
+class CacheNotConfiguredError(Exception):
+    pass

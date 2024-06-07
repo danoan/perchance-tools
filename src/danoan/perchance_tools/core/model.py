@@ -45,6 +45,6 @@ class WordDict:
 
 
 @dataclass
-class CorrectionInstructions:
-    categories: List[str]
-    corrections: List[Tuple[str]]
+class ReplaceInstructions:
+    key: List[str]
+    replace_pairs: List[Tuple[str]]

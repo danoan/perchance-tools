@@ -1,8 +1,9 @@
-from danoan.perchance_tools.core import api, model
-
+from danoan.perchance_tools.core import api, exception, model
+from danoan.llm_assistant.core.api import LLM_ASSISTANT_ENV_VARIABLE
 
 import argparse
 import logging
+import os
 from pathlib import Path
 import pycountry
 import sys
@@ -23,7 +24,7 @@ def correct_words(yml_stream: TextIO, language: Text) -> model.WordDict:
     Y = yaml.load(yml_stream, Loader=yaml.Loader)
     word_dict = model.WordDict(Y)
     list_corrections = api.find_corrections(word_dict, language)
-    corrected_dict = api.correct_words(word_dict, list_corrections)
+    corrected_dict = api.replace_words(word_dict, list_corrections)
     return corrected_dict
 
 
@@ -35,10 +36,17 @@ def __correct_words__(
         logger.error(f"Language {language} not recognized")
         exit(1)
 
-    for yml_filepath in list_yml_filepath:
-        yml_filepath = Path(yml_filepath)
+    for _yml_filepath in list_yml_filepath:
+        yml_filepath = Path(_yml_filepath)
         with open(yml_filepath, "r") as f_in:
-            corrected_dict = correct_words(f_in, language)
+            try:
+                corrected_dict = correct_words(f_in, language)
+            except exception.CacheNotConfiguredError:
+                print(
+                    "The cache for LLM calls is not configured. Please setup",
+                    " the llm-assistant with llm-assistant setup before proceeding",
+                )
+                exit(1)
             yaml.dump(corrected_dict.extract(), sys.stdout, allow_unicode=True)
 
 
