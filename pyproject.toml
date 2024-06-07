@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["jinja2","pyyaml", "pycountry", "llm-assistant @ git+https://github.com/danoan/llm-assistant.git"]
+dependencies = ["jinja2","pyyaml", "pycountry", "llm-assistant @ git+https://github.com/danoan/llm-assistant.git@v0.1"]
 # "llm-assistant @ file:///home/daniel/Projects/Git/llm-assistant"
 [project.urls]
 Documentation = "https://github.com/danoan/perchance-tools#readme"
