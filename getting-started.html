@@ -50,6 +50,16 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started with perchance-tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-example">Workflow example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#digitization">Digitization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#convert-to-perchance-format">Convert to perchance-format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#markdown-to-yml">markdown_to_yml</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#correct-words">correct_words</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">convert_to_perchance_format</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a></li>
 </ul>
 </li>
@@ -91,6 +101,141 @@ generation of natural text in several languages.</p>
 <p>The main purpose of this script is to transform a list of words
 into perchance data structures. The assumption is that the list of
 words was provided from a thesaurus in markdown format.</p>
+<section id="workflow-example">
+<h2>Workflow example<a class="headerlink" href="#workflow-example" title="Link to this heading"></a></h2>
+<section id="digitization">
+<h3>Digitization<a class="headerlink" href="#digitization" title="Link to this heading"></a></h3>
+<p>The data source should be a markdown file with a structure similar to the one below:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># Cinq sens</span>
+
+<span class="gu">## Vue</span>
+
+<span class="gu">### Verbes</span>
+
+admirer
+voir
+zieuter
+
+<span class="gu">### Noms</span>
+
+agencement
+uniformité
+vision
+visualisation
+
+<span class="gu">### Adjectifs</span>
+
+affreux
+versicolore
+vif
+vilain
+visible
+
+<span class="gu">## Toucher</span>
+
+<span class="gu">### Verbes</span>
+
+affleurer
+appuyer
+attoucher
+caresser
+</pre></div>
+</div>
+<p>That is, words are listed inside a hierarchy of categories where they belong to.</p>
+<p>If you have this data in a physical or digital book, you can make use of <a class="reference external" href="https://github.com/danoan/digital-note">digital-note</a> to convert it to text and them make the necessary modifications to put it in the markdown format.</p>
+</section>
+<section id="convert-to-perchance-format">
+<h3>Convert to perchance-format<a class="headerlink" href="#convert-to-perchance-format" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">perchance-tools</span></code> comes up with the following scripts:</p>
+<ol class="arabic simple">
+<li><p>markdown_to_yml</p></li>
+<li><p>correct_words</p></li>
+<li><p>convert_to_perchance_format</p></li>
+</ol>
+<p>We should execute these three scripts in order to obtain a curated perchance data structure.</p>
+<section id="markdown-to-yml">
+<h4>markdown_to_yml<a class="headerlink" href="#markdown-to-yml" title="Link to this heading"></a></h4>
+<p>Converts the markdown data in a more structured format. We choose yml because it is similar to the final perchance format.</p>
+<section id="example">
+<h5>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h5>
+<p>The example markdown data above would be converted to:</p>
+<div class="highlight-yml notranslate"><div class="highlight"><pre><span></span>cinq_sens:
+    vue:
+        verbes:
+            words:
+            - admirer
+            - voir
+            - zieuter
+        noms:
+            words:
+            - agencement
+            - uniformité
+            - vision
+            - visualisation
+        adjectifs:
+            words:
+            - affreux
+            - versicolore
+            - vif
+            - vilain
+            - visible
+    toucher:
+        verbes:
+            words:
+            - affleurer
+            - appuyer
+            - attoucher
+            - caresser
+</pre></div>
+</div>
+</section>
+</section>
+<section id="correct-words">
+<h4>correct_words<a class="headerlink" href="#correct-words" title="Link to this heading"></a></h4>
+<p>It is common to find errors during the digitization process. That could be a mispelling, a missing diacritic and so on.  This script will find these digitization errors with the help of a LLM prompt and the word categories.</p>
+</section>
+<section id="id1">
+<h4>convert_to_perchance_format<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Finally, this script translates the categories into English and add some tags that can be recovered by a perchance command.</p>
+<div class="highlight-yml notranslate"><div class="highlight"><pre><span></span>five_senses
+  name=five senses
+  sight
+    name=sight
+    verbs
+      name=verbs
+      words
+        admirer
+        voir
+        zieuter
+    noms
+      name=noms
+        words
+          agencement
+          uniformité
+          vision
+          visualisation
+    adjectives
+        name=adjectives
+            words
+              affreux
+              versicolore
+              vif
+              vilain
+              visible
+    toucher
+      name=toucher
+        verbs
+          name=verbs
+            words
+              affleurer
+              appuyer
+              attoucher
+              caresser
+</pre></div>
+</div>
+</section>
+</section>
+</section>
 <section id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h2>
 <p>Please reference to our <a class="reference external" href="http://danoan.github.io/perchance-tools/contributing">contribution</a> and <a class="reference external" href="http://danoan.github.io/perchance-tools/code-of-conduct">code-of-conduct</a> guideline.</p>
