@@ -10,6 +10,11 @@ The main purpose of this script is to transform a list of words
 into perchance data structures. The assumption is that the list of
 words was provided from a thesaurus in markdown format.
 
+Two perchance generators were created with the help of this project:
+
+- [Improvisation Theme Generator](https://perchance.org/danoan-theme-improvisations-fr)
+- [Character Generator](https://perchance.org/danoan-generateur-personnages)
+
 ## Workflow example
 
 ### Digitization
